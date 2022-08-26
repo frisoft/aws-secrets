@@ -16,10 +16,6 @@ type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 #[structopt(about = "Retrieve values from AWS Secrets Manager and AWS SSM Parameter Store.")]
 struct Opt {
     /// Name of the Secret to retrieve the value of.
-    ///
-    /// # Note
-    /// The secret requires the following contents at a minimum:
-    ///   {"Username":"my-user", "Password":"my-pass12345"}
     #[structopt(short, long, default_value = "my-dummy-creds")]
     secret_name: String,
     /// Name of the Parameter to retrieve the value of.

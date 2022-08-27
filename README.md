@@ -18,7 +18,7 @@ This crate works with Cargo with a `Cargo.toml` like:
 require any `async` features. -->
 ```toml
 [dependencies]
-aws-secrets = { version = "0.1", features = ["all"] }
+aws-secrets = { version = "0.1.1", features = ["all"] }
 serde_json = "1"  # optional
 tokio = { version = "1", features = ["full"] }
 ```

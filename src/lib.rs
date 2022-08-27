@@ -1,4 +1,4 @@
-#![doc(html_root_url = "https://docs.rs/aws-secrets/0.1.0")]
+#![doc(html_root_url = "https://docs.rs/aws-secrets/0.1.1")]
 #![warn(rust_2018_idioms, missing_docs)]
 #![deny(warnings, dead_code, unused_imports, unused_mut)]
 

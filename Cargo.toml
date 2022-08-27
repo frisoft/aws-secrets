@@ -1,6 +1,6 @@
 [package]
 name = "aws-secrets"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Ritvik Nag <rv.kvetch@gmail.com>"]
 description = "Retrieve AWS secrets and interact with Secrets Manager and SSM Parameter Store"
 documentation = "https://docs.rs/aws-secrets"

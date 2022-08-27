@@ -4,13 +4,13 @@
 #[macro_use]
 extern crate tracing;
 
+mod utils;
+use utils::*;
+
 use serde_json::Value;
 use structopt::StructOpt;
 
-use aws_secrets::{SSMParamExt, SecretsExt};
-
-// A simple type alias so as to DRY.
-type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+use aws_secrets::{config_from_env, SSMParamExt, SecretsExt};
 
 #[derive(Debug, StructOpt)]
 #[structopt(about = "Retrieve values from AWS Secrets Manager and AWS SSM Parameter Store.")]
@@ -40,25 +40,25 @@ async fn main() -> Result<()> {
     let secret_name = secret_name.as_str();
     let param_name = param_name.as_str();
 
-    let config = aws_config::load_from_env().await;
+    trace!(profile = ?aws_profile(), "retrieving AWS config.");
+    let shared_config = config_from_env().await;
 
     trace!(secret_name, "retrieving secret.");
     trace!(param_name, "retrieving parameter.");
 
     let get_param_fn = match no_decrypt {
-        true => param_name.get_string(&config),
-        false => param_name.get_secure_string(&config),
+        true => param_name.get_string(&shared_config),
+        false => param_name.get_secure_string(&shared_config),
     };
 
     // retrieve all secret values concurrently
-    let (secret_value, param_value) =
-        tokio::join!(secret_name.get_secret::<Value>(&config), get_param_fn);
+    let (param_value, secret_value) = tokio::try_join!(
+        get_param_fn,
+        secret_name.get_secret::<Value>(&shared_config),
+    )?;
 
-    let value = secret_value?;
-    trace!(?value, "successfully retrieved the secret.");
-
-    let value = param_value?;
-    trace!(?value, "successfully retrieved the parameter.");
+    trace!(?secret_value, "successfully retrieved the secret.");
+    trace!(?param_value, "successfully retrieved the parameter.");
 
     Ok(())
 }

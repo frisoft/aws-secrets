@@ -4,14 +4,14 @@
 #[macro_use]
 extern crate tracing;
 
+mod utils;
+use utils::*;
+
 use aws_sdk_secretsmanager::error::TagResourceErrorKind::*;
 use aws_sdk_secretsmanager::types::SdkError;
 use structopt::StructOpt;
 
-use aws_secrets::{Error, SecretsExt};
-
-// A simple type alias so as to DRY.
-type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+use aws_secrets::{config_from_env, Error, SecretsExt};
 
 #[derive(Debug, StructOpt)]
 #[structopt(about = "Set or update the tags of a Secret in AWS Secrets Manager.")]
@@ -31,7 +31,7 @@ struct Opt {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    sensible_env_logger::init!();
+    sensible_env_logger::init_timed_short!();
 
     let Opt {
         secret_name,
@@ -41,7 +41,8 @@ async fn main() -> Result<()> {
     // technically not needed
     let secret_name = secret_name.as_str();
 
-    let config = aws_config::load_from_env().await;
+    trace!(profile = ?aws_profile(), "retrieving AWS config.");
+    let config = config_from_env().await;
 
     trace!(?secret_name, ?key, ?value, "updating tag on secret.");
 
@@ -50,7 +51,7 @@ async fn main() -> Result<()> {
         .set_tag(&config, &key, &value)
         .await
         .map_err(|e| {
-            if let Error::SetTags(ref source) = e {
+            if let Error::SetTag(ref source) = e {
                 if let SdkError::ServiceError { err, .. } = source {
                     let message = err.message().unwrap_or("<empty>");
                     match err.kind {

@@ -49,3 +49,22 @@ For instance, here's an example of passing arguments to the `sm_show_secret` scr
 ```shell
 ❯❯ rx sm_show_secret -- -s "My Secret"
 ```
+
+## Setting the AWS Profile
+
+Most (if not all) scripts require you to set the AWS profile beforehand -- which points to the AWS account
+to use, for example `my-dev-aws-account`.
+
+Therefore, ensure your $AWS_PROFILE environment is correctly set up.
+
+For example, on *Mac/Linux*:
+
+```shell
+❯❯ export AWS_PROFILE='my-profile'
+```
+
+On *Windows*:
+
+```shell
+❯❯ $env:AWS_PROFILE='my-profile'
+```

@@ -59,6 +59,6 @@ impl SecretsExt for &str {
             .tags(tag)
             .send()
             .await
-            .map_err(Error::SetTags)
+            .map_err(Error::SetTag)
     }
 }

@@ -4,14 +4,14 @@
 #[macro_use]
 extern crate tracing;
 
+mod utils;
+use utils::*;
+
 use aws_sdk_ssm::error::GetParameterErrorKind::*;
 use aws_sdk_ssm::types::SdkError;
 use structopt::StructOpt;
 
-use aws_secrets::{Error, SSMParamExt};
-
-// A simple type alias so as to DRY.
-type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+use aws_secrets::{config_from_env, Error, SSMParamExt};
 
 #[derive(Debug, StructOpt)]
 #[structopt(about = "Retrieve the value of a `String` Parameter from AWS SSM Parameter Store.")]
@@ -24,13 +24,14 @@ struct Opt {
 // noinspection DuplicatedCode
 #[tokio::main]
 async fn main() -> Result<()> {
-    sensible_env_logger::init!();
+    sensible_env_logger::init_timed_short!();
 
     let Opt { param_name } = Opt::from_args();
     // technically not needed
     let param_name = param_name.as_str();
 
-    let config = aws_config::load_from_env().await;
+    trace!(profile = ?aws_profile(), "retrieving AWS config.");
+    let config = config_from_env().await;
 
     trace!(data_type = "String", param_name, "retrieving parameter.");
 

@@ -17,6 +17,16 @@ Possible header types:
   - `other_method()`
 -->
 
+## v0.1.1 (2022-08-26)
+
+- Update keywords in `Cargo.toml`.
+- Update examples.
+- Rename `Error::SetTags` to `Error::SetTag`.
+- Make `Error` non-exhaustive, as it might be a good idea
+  when more error variants are added.
+
+[crates.io]: https://crates.io/crates/aws-secrets
+
 ## v0.1.0 (2022-08-26)
 
 - Initial Release on [crates.io] :tada:

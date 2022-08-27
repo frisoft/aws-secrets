@@ -4,15 +4,15 @@
 #[macro_use]
 extern crate tracing;
 
+mod utils;
+use utils::*;
+
 use aws_sdk_secretsmanager::error::GetSecretValueErrorKind::*;
 use aws_sdk_secretsmanager::types::SdkError;
 use serde::Deserialize;
 use structopt::StructOpt;
 
-use aws_secrets::{Error, SecretsExt};
-
-// A simple type alias so as to DRY.
-type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+use aws_secrets::{config_from_env, Error, SecretsExt};
 
 /// Dummy credentials.
 /// # Note
@@ -39,13 +39,14 @@ struct Opt {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    sensible_env_logger::init!();
+    sensible_env_logger::init_timed_short!();
 
     let Opt { secret_name } = Opt::from_args();
     // technically not needed
     let secret_name = secret_name.as_str();
 
-    let config = aws_config::load_from_env().await;
+    trace!(profile = ?aws_profile(), "retrieving AWS config.");
+    let config = config_from_env().await;
 
     trace!(secret_name, "retrieving secret.");
 

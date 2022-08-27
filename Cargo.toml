@@ -6,8 +6,13 @@ description = "Retrieve AWS secrets and interact with Secrets Manager and SSM Pa
 documentation = "https://docs.rs/aws-secrets"
 repository = "https://github.com/rnag/aws-secrets"
 readme = "README.md"
-keywords = ["aws-secrets", "api", "async"]
-
+keywords = [
+    "aws-secrets",
+    "aws-sdk-rust",
+    "aws-secrets-manager",
+    "aws-parameter-store",
+    "aws",
+]
 categories = [
     # "api-bindings"
 ]

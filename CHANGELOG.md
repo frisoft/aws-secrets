@@ -10,12 +10,17 @@ Possible header types:
 - `Breaking Changes` for any backwards-incompatible changes.
 
 ## [Unreleased]
+
 <!--
 ### Features
 - Added a new struct `MyStruct` with the following methods:
   - `my_method()`
   - `other_method()`
 -->
+
+## v0.1.2 (2023-09-13)
+
+- Update aws-config dependency.
 
 ## v0.1.1 (2022-08-26)
 

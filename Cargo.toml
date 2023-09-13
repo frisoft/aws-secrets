@@ -1,6 +1,6 @@
 [package]
 name = "aws-secrets"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Ritvik Nag <rv.kvetch@gmail.com>"]
 description = "Retrieve AWS secrets and interact with Secrets Manager and SSM Parameter Store"
 documentation = "https://docs.rs/aws-secrets"
@@ -34,7 +34,7 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
 async-trait = "0.1.57"
-aws-config = "0.47.0"
+aws-config = "0.56.1"
 thiserror = "^1.0"
 
 # Optional
